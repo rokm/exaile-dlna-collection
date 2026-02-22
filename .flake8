@@ -1,0 +1,5 @@
+[flake8]
+show-source=True
+# E265 - block comment should start with '# '
+extend-ignore = E265
+max-line-length=120
