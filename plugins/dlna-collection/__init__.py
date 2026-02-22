@@ -268,9 +268,9 @@ class MediaServer(GUPnP.DeviceProxy):
         """Identifies the media server type in order to enable metadata quirks."""
 
         #model_name = self.get_model_name()
-        model_description = self.get_model_description()
+        model_description = self.get_model_description()  # Might be None!
 
-        if "MiniDLNA" in model_description:
+        if "MiniDLNA" in (model_description or ""):
             return "minidlna"
 
         return "generic"
