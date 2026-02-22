@@ -22,7 +22,7 @@ import weakref
 
 import gi
 
-gi.require_version('GUPnP', '1.2')
+gi.require_version('GUPnP', '1.6')
 gi.require_version('GUPnPAV', '1.0')
 gi.require_version('Gtk', '3.0')
 
@@ -357,12 +357,20 @@ class MediaServer (GUPnP.DeviceProxy):
         # Process
         while True:
             # Search from start index
-            (status, out_values) = self.__content_directory.send_action_list("Search",
+            action = GUPnP.ServiceProxyAction.new_from_list(
+                "Search",
                 ('ContainerID', 'SearchCriteria', 'Filter', 'StartingIndex', 'RequestedCount', 'SortCriteria'),
                 ('0', 'upnp:class derivedfrom "object.item.audioItem"', '*', start_index, request_size, ''),
-                ('Result', 'NumberReturned', 'TotalMatches'),
-                (str, int, int)
             )
+
+            self.__content_directory.call_action(action)  # TODO: handle error
+
+            (status, out_values) = action.get_result_list(
+                ('Result', 'NumberReturned', 'TotalMatches'),
+                (str, int, int),
+            )
+
+            del action
 
             didl_xml = out_values[0]
             number_returned = out_values[1]
