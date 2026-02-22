@@ -422,7 +422,6 @@ class DlnaManager (GObject.GObject):
         super(DlnaManager, self).__init__()
 
         self.__context_manager = None
-        self.__control_point = None
 
         self.__exaile = exaile
 
@@ -460,7 +459,6 @@ class DlnaManager (GObject.GObject):
     def shutdown (self):
         self.__exaile = None
         self.__context_manager = None
-        self.__control_point = None
 
         #self.__media_servers = {}
 
@@ -479,9 +477,6 @@ class DlnaManager (GObject.GObject):
 
         # Let context manager manage the control point
         context_manager.manage_control_point(control_point)
-
-        # Store reference
-        self.__control_point = control_point
 
 
     def on_server_proxy_available (self, control_point, media_server):
